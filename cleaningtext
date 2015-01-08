@@ -1,0 +1,38 @@
+import csv
+##remember the exclusion list?  we'll use it here.
+file='C:\\Users\\kliu\\Dropbox\\match.algorithm\\exclusionlist.csv'
+
+#pulling everything in the exclusion list into a python list
+list=[]
+with open(file,'rb') as data:
+	reader=csv.reader(data)
+	reader.next()
+	for row in reader:
+		list.append(row)
+		
+#just renaming some things here		
+print list
+exclusionlist=[y for x in list for y in x]
+print exclusionlist
+
+#writing a function to replace everything in the exclusion list with a blank space in our main data
+def replacestuff(string):
+	for text in exclusionlist:
+		newstring=string.replace(text,"")
+		string=newstring
+	return string
+
+#pulling in our main data and replacing the words we don't want in the third column with a blank space.
+array=[]
+with open('C:\\Users\\kliu\\Dropbox\\match.algorithm\\maindata.csv','rb') as data:
+	reader=csv.reader(data)
+	reader.next()
+	for row in reader:
+		array.append([replacestuff(row[4])])
+
+
+#finally we get a cleaned list of names.  Paste this into your original fund data file before clustering.		
+filename='namescleaned.csv'
+output=csv.writer(open(filename,'wb'))
+for item in array:
+		output.writerow(item)
